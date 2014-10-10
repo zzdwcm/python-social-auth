@@ -75,7 +75,10 @@ def do_complete(strategy, login, user=None, redirect_name='next',
             url = setting_url(strategy, 'INACTIVE_USER_URL', 'LOGIN_ERROR_URL',
                               'LOGIN_URL')
     else:
-        url = setting_url(strategy, 'LOGIN_ERROR_URL', 'LOGIN_URL')
+        if 'authentication_user_detail' in strategy.request.session:
+            url = setting_url(strategy, 'AUTHENTICATION_SUCCESS_URL', 'LOGIN_ERROR_URL')
+        else:
+            url = setting_url(strategy, 'LOGIN_ERROR_URL', 'LOGIN_URL')
 
     if redirect_value and redirect_value != url:
         redirect_value = quote(redirect_value)
