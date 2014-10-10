@@ -87,3 +87,10 @@ def load_extra_data(strategy, details, response, uid, user, *args, **kwargs):
     if social:
         extra_data = strategy.backend.extra_data(user, uid, response, details)
         social.set_extra_data(extra_data)
+
+def save_authentication_user_detail_to_session(strategy, details, user=None, *args, **kwargs):
+    authentication_detail = kwargs.get('response', None)
+    request = strategy.request
+    if not authentication_detail or not request:
+        return
+    request.session['authentication_user_detail'] = authentication_detail
