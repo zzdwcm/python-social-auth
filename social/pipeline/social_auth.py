@@ -93,4 +93,5 @@ def save_authentication_user_detail_to_session(strategy, details, user=None, *ar
     request = strategy.request
     if not authentication_detail or not request:
         return
+    authentication_detail['social_provider'] = strategy.backend.name
     request.session['authentication_user_detail'] = authentication_detail
