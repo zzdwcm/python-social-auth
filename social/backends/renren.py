@@ -30,3 +30,13 @@ class RenRenOAuth2(BaseOAuth2):
 
     def user_data(self, access_token, *args, **kwargs):
         return kwargs['response']['user']
+
+    def extra_data(self, user, uid, response, details):
+        data = super(RenRenOAuth2, self).extra_data(user, uid, response, details)
+        avatars = response.get('avatar', [])
+        profile_image_url = None
+        for avatar_dict in avatars:
+            if avatar_dict.get('type') == 'avatar':
+                profile_image_url = avatar_dict.get('url', '')
+        data['profile_image_url'] = profile_image_url
+        return data

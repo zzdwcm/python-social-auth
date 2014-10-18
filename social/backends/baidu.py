@@ -30,3 +30,10 @@ class BaiduOAuth2(BaseOAuth2):
 
     def user_data(self, access_token, *args, **kwargs):
         return self.get_json('https://openapi.baidu.com/rest/2.0/passport/users/getInfo',params={'access_token': access_token})
+
+    def extra_data(self, user, uid, response, details):
+        data = super(BaiduOAuth2, self).extra_data(user, uid, response, details)
+        portrait = response.get('portrait', None)
+        profile_image_url = None if not portrait else 'http://tb.himg.baidu.com/sys/portrait/item/{}'.format(portrait)
+        data['profile_image_url'] = profile_image_url
+        return data

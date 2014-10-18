@@ -36,8 +36,8 @@ class DoubanOAuth2(BaseOAuth2):
     REDIRECT_STATE = False
     EXTRA_DATA = [
         ('id', 'id'),
-        ('uid', 'username'),
-        ('refresh_token', 'refresh_token'),
+        ('name', 'username'),
+        ('avatar', 'profile_image_url'),
     ]
 
     def get_user_details(self, response):
