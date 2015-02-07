@@ -234,12 +234,14 @@ class BaseOAuth2(OAuthAuth):
         ACCESS_TOKEN_URL        Token URL
     """
     AUTHORIZATION_URL = None
+    AUTHORIZATION_URL_ANCHOR = None
     ACCESS_TOKEN_URL = None
     REFRESH_TOKEN_URL = None
     REFRESH_TOKEN_METHOD = 'POST'
     RESPONSE_TYPE = 'code'
     REDIRECT_STATE = True
     STATE_PARAMETER = True
+
 
     def state_token(self):
         """Generate csrf token to include as state parameter."""
@@ -288,7 +290,12 @@ class BaseOAuth2(OAuthAuth):
             # redirect_uri matching is strictly enforced, so match the
             # providers value exactly.
             params = unquote(params)
-        return self.AUTHORIZATION_URL + '?' + params
+
+        if self.AUTHORIZATION_URL_ANCHOR:
+            anchor = "#" + self.AUTHORIZATION_URL_ANCHOR
+        else:
+            anchor = ""
+        return self.AUTHORIZATION_URL + '?' + params + anchor
 
     def validate_state(self):
         """Validate state value. Raises exception on error, returns state
