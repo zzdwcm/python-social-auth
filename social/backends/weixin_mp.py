@@ -16,7 +16,7 @@ class WeixinMPOAuth2(BaseOAuth2):
     AUTHORIZATION_URL = 'https://open.weixin.qq.com/connect/oauth2/authorize'
     AUTHORIZATION_URL_ANCHOR = "wechat_redirect"
     ACCESS_TOKEN_URL = 'https://api.weixin.qq.com/sns/oauth2/access_token'
-    ACCESS_TOKEN_METHOD = 'GET'
+    ACCESS_TOKEN_METHOD = 'POST'
     REDIRECT_STATE = False
     EXTRA_DATA = [
         ('nickname', 'username'),
@@ -62,12 +62,12 @@ class WeixinMPOAuth2(BaseOAuth2):
 
     def auth_complete_params(self, state=None):
         appid, secret = self.get_key_and_secret()
+
         return {
             'grant_type': 'authorization_code',  # request auth code
             'code': self.data.get('code', ''),  # server response code
             'appid': appid,
             'secret': secret,
-            #'redirect_uri': self.get_redirect_uri(state),
         }
 
     def refresh_token_params(self, token, *args, **kwargs):
@@ -76,6 +76,5 @@ class WeixinMPOAuth2(BaseOAuth2):
             'refresh_token': token,
             'grant_type': 'refresh_token',
             'appid': appid,
-            #'secret': secret
         }
 
