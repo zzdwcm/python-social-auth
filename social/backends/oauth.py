@@ -1,5 +1,6 @@
 import six
 
+import urllib
 from requests import HTTPError
 from requests_oauthlib import OAuth1
 from oauthlib.oauth1 import SIGNATURE_TYPE_AUTH_HEADER
@@ -252,7 +253,7 @@ class BaseOAuth2(OAuthAuth):
         uri = self.redirect_uri
         if self.REDIRECT_STATE and state:
             uri = url_add_parameters(uri, {'redirect_state': state})
-        return uri
+        return urllib.quote_plus(uri)
 
     def auth_params(self, state=None):
         client_id, client_secret = self.get_key_and_secret()
